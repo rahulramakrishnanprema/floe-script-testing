@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Elegant Calculator</title>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline';">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <main class="flex items-center justify-center min-h-screen">
+    <section class="calculator" role="application" aria-label="Calculator">
+      <input type="text" id="display" readonly aria-label="Calculator display" />
+      <div class="grid">
+        <button type="button" class="calc-btn" data-value="7" aria-label="7">7</button>
+        <button type="button" class="calc-btn" data-value="8" aria-label="8">8</button>
+        <button type="button" class="calc-btn" data-value="9" aria-label="9">9</button>
+        <button type="button" class="calc-btn operator" data-value="/" aria-label="divide">÷</button>
+
+        <button type="button" class="calc-btn" data-value="4" aria-label="4">4</button>
+        <button type="button" class="calc-btn" data-value="5" aria-label="5">5</button>
+        <button type="button" class="calc-btn" data-value="6" aria-label="6">6</button>
+        <button type="button" class="calc-btn operator" data-value="*" aria-label="multiply">×</button>
+
+        <button type="button" class="calc-btn" data-value="1" aria-label="1">1</button>
+        <button type="button" class="calc-btn" data-value="2" aria-label="2">2</button>
+        <button type="button" class="calc-btn" data-value="3" aria-label="3">3</button>
+        <button type="button" class="calc-btn operator" data-value="-" aria-label="subtract">−</button>
+
+        <button type="button" class="calc-btn" data-value="0" aria-label="0">0</button>
+        <button type="button" class="calc-btn" data-value="." aria-label="decimal point">.</button>
+        <button type="button" class="calc-btn" id="clear" aria-label="clear">C</button>
+        <button type="button" class="calc-btn operator" data-value="+" aria-label="add">+</button>
+
+        <button type="button" class="calc-btn" id="equals" aria-label="equals">=</button>
+      </div>
+    </section>
+  </main>
+  <script src="js/script.js" defer></script>
+</body>
+</html>
