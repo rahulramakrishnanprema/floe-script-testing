@@ -1,54 +1,32 @@
-# Elegant Calculator
+# Portfolio Advisory Platform
 
-A responsive, glass‑morphism styled web calculator that performs basic arithmetic (addition, subtraction, multiplication, division). The app is built with plain HTML, CSS and vanilla JavaScript – no build tools or backend required.
+## Overview
+A full‑stack application that lets financial advisors manage client portfolios of Indian equities and receive automated Buy/Hold/Sell signals based on historical price performance.
 
-## Features
-- Clean, modern UI with gradient background and frosted‑glass effect.
-- Fully functional numeric keypad with operators and a clear button.
-- Real‑time display updates and error handling for division by zero.
-- Mobile‑friendly layout that scales gracefully on all screen sizes.
+## Tech Stack
+- **Backend**: Python 3.12, FastAPI, PostgreSQL, SQLAlchemy, JWT
+- **Frontend**: React 18, TypeScript, Vite, Tailwind CSS, Recharts, Framer Motion
+- **CI/CD**: GitHub Actions, Docker, AWS ECS (or Cloud Run)
 
-## Demo
-Open `index.html` in any modern browser to start using the calculator.
+## Quick Start (Development)
+```bash
+# Clone repo
+git clone <repo-url>
+cd portfolio-advisory
 
-## Project Structure
+# Backend setup
+cd backend
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+cp .env.example .env   # edit DATABASE_URL and JWT_SECRET
+uvicorn src.main:app --reload
+
+# Frontend setup
+cd ../frontend
+npm install
+cp .env.example .env   # ensure VITE_API_URL points to backend URL
+npm run dev
 ```
-.
-├── index.html          # Main HTML entry point
-├── css/
-│   └── style.css      # All styling (gradient, glass‑morphism, grid)
-├── js/
-│   └── script.js      # Calculator logic and event handling
-├── README.md           # Documentation (this file)
-└── .gitignore          # Git ignore rules
-```
 
-## Getting Started
-
-### Prerequisites
-- A web browser (Chrome, Firefox, Edge, Safari, etc.)
-- No server or package manager needed – the app runs completely client‑side.
-
-### Installation
-1. Clone the repository or download the ZIP.
-2. Open the project folder.
-3. Double‑click `index.html` or serve the folder with any static file server (e.g., `python -m http.server`).
-
-### Usage
-- Click the numeric and operator buttons to build an expression.
-- Press `=` to compute the result.
-- Press `C` to clear the current entry.
-
-## Development
-If you wish to modify the calculator:
-- Edit `css/style.css` to change colors, spacing, or effects.
-- Edit `js/script.js` to extend functionality (e.g., add keyboard support or scientific operations).
-
-## Contributing
-Contributions are welcome! Please fork the repository, make your changes, and submit a pull request.
-
-## License
-This project is released under the MIT License.
-
----
-*Built with love, gradients, and a touch of glass.*
+For full deployment, testing, and monitoring instructions see the respective `backend/README.md` and `frontend/README.md` files.
