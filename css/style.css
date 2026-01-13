@@ -1,91 +1,89 @@
 :root {
-  --bg-gradient: linear-gradient(135deg, #667eea, #764ba2);
+  --bg-gradient: linear-gradient(135deg, #1e3c72, #2a5298);
   --calc-bg: rgba(255, 255, 255, 0.15);
-  --button-bg: rgba(255, 255, 255, 0.25);
-  --button-hover: rgba(255, 255, 255, 0.35);
-  --operator-bg: #ff9f43;
-  --operator-hover: #ff7f1a;
+  --btn-bg: rgba(255, 255, 255, 0.25);
+  --btn-hover: rgba(255, 255, 255, 0.35);
+  --font: 'Inter', sans-serif;
 }
 
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-html, body {
-  height: 100%;
-  background: var(--bg-gradient);
+body {
+  min-height: 100vh;
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
+  background: var(--bg-gradient);
+  font-family: var(--font);
+  color: #fff;
 }
 
 .calculator {
-  width: 320px;
-  padding: 20px;
-  border-radius: 20px;
   background: var(--calc-bg);
   backdrop-filter: blur(10px);
-  box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+  border-radius: 20px;
+  padding: 20px;
+  width: 320px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
 }
 
-#display {
+.display {
   width: 100%;
   height: 60px;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  border-radius: 10px;
   margin-bottom: 15px;
   font-size: 2rem;
   text-align: right;
   padding: 10px;
-  border: none;
-  border-radius: 10px;
-  background: rgba(255,255,255,0.2);
   color: #fff;
 }
 
-.grid {
+.buttons {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 10px;
 }
 
-.calc-btn {
-  padding: 15px;
-  font-size: 1.2rem;
+.btn {
+  background: var(--btn-bg);
   border: none;
   border-radius: 10px;
-  background: var(--button-bg);
+  font-size: 1.5rem;
+  padding: 15px;
   color: #fff;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: background 0.2s ease;
 }
 
-.calc-btn:hover {
-  background: var(--button-hover);
+.btn:hover {
+  background: var(--btn-hover);
 }
 
 .operator {
-  background: var(--operator-bg);
+  background: rgba(255, 165, 0, 0.25);
 }
 
 .operator:hover {
-  background: var(--operator-hover);
+  background: rgba(255, 165, 0, 0.35);
 }
 
-#equals {
+.equal {
   grid-column: span 4;
-  background: #4caf50;
+  background: rgba(0, 200, 83, 0.25);
 }
 
-#equals:hover {
-  background: #43a047;
+.equal:hover {
+  background: rgba(0, 200, 83, 0.35);
 }
 
-#clear {
-  background: #e74c3c;
-}
-
-#clear:hover {
-  background: #c0392b;
+@media (max-width: 400px) {
+  .calculator {
+    width: 90%;
+  }
 }
