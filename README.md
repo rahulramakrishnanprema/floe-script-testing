@@ -1,32 +1,45 @@
-# Portfolio Advisory Platform
+# Advanced Calculator
 
-## Overview
-A full‑stack application that lets financial advisors manage client portfolios of Indian equities and receive automated Buy/Hold/Sell signals based on historical price performance.
+A sleek, responsive web calculator built with plain HTML, CSS, and JavaScript. The UI mimics a classic calculator layout with modern glassmorphism styling and a gradient background.
 
-## Tech Stack
-- **Backend**: Python 3.12, FastAPI, PostgreSQL, SQLAlchemy, JWT
-- **Frontend**: React 18, TypeScript, Vite, Tailwind CSS, Recharts, Framer Motion
-- **CI/CD**: GitHub Actions, Docker, AWS ECS (or Cloud Run)
+## Features
 
-## Quick Start (Development)
-```bash
-# Clone repo
-git clone <repo-url>
-cd portfolio-advisory
+- Basic arithmetic: addition, subtraction, multiplication, division
+- Clear (C) and decimal support
+- Responsive design for mobile and desktop
+- Visually polished with gradients, glass effect, and hover animations
+- Security‑enhanced with a strict Content‑Security‑Policy header
 
-# Backend setup
-cd backend
-python -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-cp .env.example .env   # edit DATABASE_URL and JWT_SECRET
-uvicorn src.main:app --reload
+## Project Structure
 
-# Frontend setup
-cd ../frontend
-npm install
-cp .env.example .env   # ensure VITE_API_URL points to backend URL
-npm run dev
+```
+project/
+├─ index.html          # Main page with calculator layout
+├─ css/
+│   └─ style.css       # Styling (gradient, glassmorphism, responsive)
+├─ js/
+│   └─ script.js       # Calculator logic
+├─ README.md           # This file
+└─ .gitignore          # Ignored files
 ```
 
-For full deployment, testing, and monitoring instructions see the respective `backend/README.md` and `frontend/README.md` files.
+## Getting Started
+
+1. **Clone the repository** or download the files.
+2. Open `index.html` in any modern browser (Chrome, Firefox, Edge, Safari).
+
+No build steps or external dependencies are required.
+
+## Development
+
+- **Styling** – Edit `css/style.css` to adjust colors, gradients, or layout.
+- **Logic** – Modify `js/script.js` to add features such as keyboard support, scientific functions, or theming.
+- **Accessibility** – The markup includes ARIA labels and a semantic `<main>` element; feel free to enhance further.
+
+## Security Notes
+
+The page includes a **Content‑Security‑Policy** meta tag that restricts resources to the same origin and disables unsafe inline scripts. This mitigates XSS risks while still allowing the required inline styles.
+
+## License
+
+This project is open source and free to use.
