@@ -1,11 +1,9 @@
-node_modules/
-/dist/
-/.env
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
-.env
+# OS files
 .DS_Store
-.idea/
+Thumbs.db
+
+# IDE files
 .vscode/
+.idea/
+
+# Build artifacts (none for static site)
