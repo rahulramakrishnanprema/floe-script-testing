@@ -4,36 +4,41 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Advanced Calculator</title>
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'" />
+  <!-- Content Security Policy to mitigate XSS -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' https://cdn.tailwindcss.com;" />
+  <!-- Tailwind CSS via CDN (runtime) -->
+  <script src="https://cdn.tailwindcss.com" defer></script>
+  <!-- Custom CSS for variables and minor tweaks -->
   <link rel="stylesheet" href="css/style.css" />
 </head>
-<body>
-  <main class="calculator" aria-label="Calculator">
-    <input type="text" id="display" class="display" readonly aria-readonly="true" />
-    <div class="buttons" role="group" aria-label="Calculator buttons">
-      <button class="btn" data-value="7" aria-label="7">7</button>
-      <button class="btn" data-value="8" aria-label="8">8</button>
-      <button class="btn" data-value="9" aria-label="9">9</button>
-      <button class="btn operator" data-value="/" aria-label="divide">÷</button>
+<body class="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-800 to-blue-500 font-sans text-white">
+  <main class="calculator bg-white/15 backdrop-blur-custom rounded-xl p-6 w-80 shadow-2xl" role="region" aria-label="Calculator">
+    <label for="display" class="sr-only">Calculator display</label>
+    <input type="text" id="display" class="display w-full h-16 text-right text-3xl bg-white/20 rounded-lg p-2 text-white focus:outline-none focus:ring-2 focus:ring-white/50" readonly />
+    <div class="buttons grid grid-cols-4 gap-2 mt-4" role="grid">
+      <button type="button" class="btn bg-white/20 hover:bg-white/30 active:bg-white/40 text-white rounded-lg h-16 text-xl transition" data-value="7" role="gridcell" aria-label="7">7</button>
+      <button type="button" class="btn bg-white/20 hover:bg-white/30 active:bg-white/40 text-white rounded-lg h-16 text-xl transition" data-value="8" role="gridcell" aria-label="8">8</button>
+      <button type="button" class="btn bg-white/20 hover:bg-white/30 active:bg-white/40 text-white rounded-lg h-16 text-xl transition" data-value="9" role="gridcell" aria-label="9">9</button>
+      <button type="button" class="btn operator bg-orange-400/30 hover:bg-orange-400/40 active:bg-orange-400/50 text-white rounded-lg h-16 text-xl transition" data-value="/" role="gridcell" aria-label="divide">÷</button>
 
-      <button class="btn" data-value="4" aria-label="4">4</button>
-      <button class="btn" data-value="5" aria-label="5">5</button>
-      <button class="btn" data-value="6" aria-label="6">6</button>
-      <button class="btn operator" data-value="*" aria-label="multiply">×</button>
+      <button type="button" class="btn bg-white/20 hover:bg-white/30 active:bg-white/40 text-white rounded-lg h-16 text-xl transition" data-value="4" role="gridcell" aria-label="4">4</button>
+      <button type="button" class="btn bg-white/20 hover:bg-white/30 active:bg-white/40 text-white rounded-lg h-16 text-xl transition" data-value="5" role="gridcell" aria-label="5">5</button>
+      <button type="button" class="btn bg-white/20 hover:bg-white/30 active:bg-white/40 text-white rounded-lg h-16 text-xl transition" data-value="6" role="gridcell" aria-label="6">6</button>
+      <button type="button" class="btn operator bg-orange-400/30 hover:bg-orange-400/40 active:bg-orange-400/50 text-white rounded-lg h-16 text-xl transition" data-value="*" role="gridcell" aria-label="multiply">×</button>
 
-      <button class="btn" data-value="1" aria-label="1">1</button>
-      <button class="btn" data-value="2" aria-label="2">2</button>
-      <button class="btn" data-value="3" aria-label="3">3</button>
-      <button class="btn operator" data-value="-" aria-label="subtract">−</button>
+      <button type="button" class="btn bg-white/20 hover:bg-white/30 active:bg-white/40 text-white rounded-lg h-16 text-xl transition" data-value="1" role="gridcell" aria-label="1">1</button>
+      <button type="button" class="btn bg-white/20 hover:bg-white/30 active:bg-white/40 text-white rounded-lg h-16 text-xl transition" data-value="2" role="gridcell" aria-label="2">2</button>
+      <button type="button" class="btn bg-white/20 hover:bg-white/30 active:bg-white/40 text-white rounded-lg h-16 text-xl transition" data-value="3" role="gridcell" aria-label="3">3</button>
+      <button type="button" class="btn operator bg-orange-400/30 hover:bg-orange-400/40 active:bg-orange-400/50 text-white rounded-lg h-16 text-xl transition" data-value="-" role="gridcell" aria-label="subtract">−</button>
 
-      <button class="btn" data-value="0" aria-label="0">0</button>
-      <button class="btn" data-value="." aria-label="decimal point">.</button>
-      <button class="btn" id="clear" aria-label="clear">C</button>
-      <button class="btn operator" data-value="+" aria-label="add">+</button>
+      <button type="button" class="btn bg-white/20 hover:bg-white/30 active:bg-white/40 text-white rounded-lg h-16 text-xl transition" data-value="0" role="gridcell" aria-label="0">0</button>
+      <button type="button" class="btn bg-white/20 hover:bg-white/30 active:bg-white/40 text-white rounded-lg h-16 text-xl transition" data-value="." role="gridcell" aria-label="decimal point">.</button>
+      <button type="button" class="btn equal bg-green-500/30 hover:bg-green-500/40 active:bg-green-500/50 text-white rounded-lg h-16 text-xl transition" data-action="calculate" role="gridcell" aria-label="equals">=</button>
+      <button type="button" class="btn operator bg-orange-400/30 hover:bg-orange-400/40 active:bg-orange-400/50 text-white rounded-lg h-16 text-xl transition" data-value="+" role="gridcell" aria-label="add">+</button>
 
-      <button class="btn equal" id="equals" aria-label="equals">=</button>
+      <button type="button" class="btn clear col-span-4 bg-red-500/30 hover:bg-red-500/40 active:bg-red-500/50 text-white rounded-lg h-16 text-xl transition" data-action="clear" role="gridcell" aria-label="clear">C</button>
     </div>
   </main>
-  <script src="js/script.js"></script>
+  <script src="js/script.js" defer></script>
 </body>
 </html>
