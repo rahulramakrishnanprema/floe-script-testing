@@ -1,63 +1,64 @@
-# Advanced Calculator
+# Calculator Web App
 
-A responsive, single‑page web calculator built with **Tailwind CSS** and a glass‑morphism UI. Supports addition, subtraction, multiplication, and division.
+A sleek, responsive arithmetic calculator built with **plain HTML, CSS, and JavaScript**. The UI mimics a physical calculator using modern CSS effects such as gradients and glassmorphism.
 
 ## Features
+- Basic operations: addition, subtraction, multiplication, division.
+- Clear (`C`) and equals (`=`) functionality.
+- Keyboard support (numbers, operators, Enter, Backspace, Escape).
+- Responsive layout for mobile and desktop.
+- Visually polished with gradient background, translucent container, and smooth button interactions.
 
-- Gradient background with a modern glass‑morphism container.
-- Tailwind‑powered utility‑first styling for a polished SaaS look.
-- Fully functional arithmetic operations.
-- Mobile‑first responsive design.
-- Accessible markup (ARIA roles, screen‑reader labels, focus states).
-- Content‑Security‑Policy (CSP) meta tag to mitigate XSS.
+## Project Structure
+```
+project-root/
+├─ index.html          # Main page with calculator markup
+├─ css/
+│   └─ style.css      # Styling (gradient, glass effect, responsive grid)
+├─ js/
+│   └─ script.js      # Calculator logic and event handling
+├─ README.md           # This documentation
+└─ .gitignore          # Git ignore rules
+```
 
-## Getting Started
-
-### Prerequisites
-
+## Prerequisites
 - Any modern web browser (Chrome, Firefox, Edge, Safari).
+- No server or build tools required.
 
-### Installation & Running
-
-1. **Clone the repository**
+## Setup & Running
+1. Clone the repository:
    ```bash
    git clone <repo-url>
    cd <repo-folder>
    ```
-2. **Open the application**
-   - Double‑click `index.html` in your file explorer, **or**
-   - Serve the directory with a simple HTTP server (recommended for CSP compliance):
+2. Open `index.html` in your browser:
+   - Double‑click the file, **or**
+   - Serve it locally (optional) using a simple HTTP server:
      ```bash
      # Python 3.x
      python -m http.server 8000
-     # Then open http://localhost:8000 in your browser
+     # Then navigate to http://localhost:8000
      ```
 
-## Project Structure
+## Usage
+- Click the buttons or use your keyboard to type numbers and operators.
+- Press `=` or `Enter` to evaluate.
+- Press `C` or `Escape` to clear.
 
-```
-project/
-├─ .gitignore          # Git ignore rules
-├─ css/
-│   └─ style.css       # Custom CSS variables & tweaks
-├─ js/
-│   └─ script.js       # Calculator logic (strict mode, no globals)
-├─ index.html          # Entry point with Tailwind CDN and CSP
-└─ README.md           # Documentation (this file)
-```
+## Testing
+Manual testing is sufficient:
+- Verify each button updates the display correctly.
+- Confirm that complex expressions (e.g., `12/3+5*2`) evaluate accurately.
+- Ensure the UI adapts to different screen sizes.
 
-## Development
+## Deployment
+The app consists of static assets, so you can host it on any static‑site platform:
+- GitHub Pages
+- Netlify
+- Vercel
+- AWS S3 + CloudFront
 
-- **Styling** – Edit `css/style.css` for custom variables or add Tailwind utilities directly in `index.html`.
-- **Logic** – Modify `js/script.js` to extend functionality (e.g., keyboard support, scientific operations).
-- **Security** – The CSP meta tag restricts script sources to self and the Tailwind CDN. Adjust it if you add additional external resources.
-
-## Accessibility
-
-- All interactive elements are native `<button>` elements with appropriate `aria-label`s.
-- The display input is labelled with a visually hidden `<label>` for screen readers.
-- Focus rings are provided via Tailwind's `focus:ring` utilities.
+Simply upload the contents of the repository (or the `dist` folder if you generated one) and configure the site to serve `index.html` as the entry point.
 
 ## License
-
-MIT © 2024
+This project is released under the MIT License.
