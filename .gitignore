@@ -2,8 +2,5 @@
 .DS_Store
 Thumbs.db
 
-# IDE files
-.vscode/
-.idea/
-
-# Build artifacts (none for static site)
+# Node artifacts (if any)
+node_modules/
