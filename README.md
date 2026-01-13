@@ -1,45 +1,63 @@
 # Advanced Calculator
 
-A sleek, responsive web calculator built with plain HTML, CSS, and JavaScript. The UI mimics a classic calculator layout with modern glassmorphism styling and a gradient background.
+A responsive, single‑page web calculator built with **Tailwind CSS** and a glass‑morphism UI. Supports addition, subtraction, multiplication, and division.
 
 ## Features
 
-- Basic arithmetic: addition, subtraction, multiplication, division
-- Clear (C) and decimal support
-- Responsive design for mobile and desktop
-- Visually polished with gradients, glass effect, and hover animations
-- Security‑enhanced with a strict Content‑Security‑Policy header
+- Gradient background with a modern glass‑morphism container.
+- Tailwind‑powered utility‑first styling for a polished SaaS look.
+- Fully functional arithmetic operations.
+- Mobile‑first responsive design.
+- Accessible markup (ARIA roles, screen‑reader labels, focus states).
+- Content‑Security‑Policy (CSP) meta tag to mitigate XSS.
+
+## Getting Started
+
+### Prerequisites
+
+- Any modern web browser (Chrome, Firefox, Edge, Safari).
+
+### Installation & Running
+
+1. **Clone the repository**
+   ```bash
+   git clone <repo-url>
+   cd <repo-folder>
+   ```
+2. **Open the application**
+   - Double‑click `index.html` in your file explorer, **or**
+   - Serve the directory with a simple HTTP server (recommended for CSP compliance):
+     ```bash
+     # Python 3.x
+     python -m http.server 8000
+     # Then open http://localhost:8000 in your browser
+     ```
 
 ## Project Structure
 
 ```
 project/
-├─ index.html          # Main page with calculator layout
+├─ .gitignore          # Git ignore rules
 ├─ css/
-│   └─ style.css       # Styling (gradient, glassmorphism, responsive)
+│   └─ style.css       # Custom CSS variables & tweaks
 ├─ js/
-│   └─ script.js       # Calculator logic
-├─ README.md           # This file
-└─ .gitignore          # Ignored files
+│   └─ script.js       # Calculator logic (strict mode, no globals)
+├─ index.html          # Entry point with Tailwind CDN and CSP
+└─ README.md           # Documentation (this file)
 ```
-
-## Getting Started
-
-1. **Clone the repository** or download the files.
-2. Open `index.html` in any modern browser (Chrome, Firefox, Edge, Safari).
-
-No build steps or external dependencies are required.
 
 ## Development
 
-- **Styling** – Edit `css/style.css` to adjust colors, gradients, or layout.
-- **Logic** – Modify `js/script.js` to add features such as keyboard support, scientific functions, or theming.
-- **Accessibility** – The markup includes ARIA labels and a semantic `<main>` element; feel free to enhance further.
+- **Styling** – Edit `css/style.css` for custom variables or add Tailwind utilities directly in `index.html`.
+- **Logic** – Modify `js/script.js` to extend functionality (e.g., keyboard support, scientific operations).
+- **Security** – The CSP meta tag restricts script sources to self and the Tailwind CDN. Adjust it if you add additional external resources.
 
-## Security Notes
+## Accessibility
 
-The page includes a **Content‑Security‑Policy** meta tag that restricts resources to the same origin and disables unsafe inline scripts. This mitigates XSS risks while still allowing the required inline styles.
+- All interactive elements are native `<button>` elements with appropriate `aria-label`s.
+- The display input is labelled with a visually hidden `<label>` for screen readers.
+- Focus rings are provided via Tailwind's `focus:ring` utilities.
 
 ## License
 
-This project is open source and free to use.
+MIT © 2024
