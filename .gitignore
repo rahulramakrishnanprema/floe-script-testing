@@ -1,6 +1,13 @@
-# OS files
+# Node.js artifacts (if any)
+node_modules/
+
+# Environment files
+.env
+
+# OS generated files
 .DS_Store
 Thumbs.db
 
-# Node artifacts (if any)
-node_modules/
+# Build directories (not used here but safe to ignore)
+dist/
+build/
