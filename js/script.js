@@ -1,122 +1,105 @@
-// js/script.js
+// script.js - Calculator logic
 "use strict";
 (() => {
   /**
-   * Updates the calculator display.
-   * @param {string|number} value - The value to show on the display.
+   * Updates the calculator display with the current input or a default zero.
    */
-  const updateDisplay = (value) => {
-    display.value = String(value);
+  const updateDisplay = () => {
+    const display = document.getElementById("display");
+    display.value = currentInput || "0";
   };
 
   /**
-   * Handles numeric and decimal button presses.
-   * @param {string} num - The digit or decimal point pressed.
+   * Resets all internal state variables and clears the display.
    */
-  const handleNumber = (num) => {
-    if (waitingForSecond) {
-      updateDisplay(num);
-      waitingForSecond = false;
-    } else {
-      // Prevent multiple leading zeros
-      if (display.value === "0" && num !== ".") {
-        updateDisplay(num);
-      } else {
-        // Prevent multiple decimals in the same number
-        if (num === "." && display.value.includes('.')) {
-          return;
-        }
-        updateDisplay(display.value + num);
-      }
-    }
-  };
-
-  /**
-   * Stores the selected operator and prepares for the next operand.
-   * @param {string} op - One of '+', '-', '*', '/'.
-   */
-  const handleOperator = (op) => {
-    if (firstOperand === null) {
-      firstOperand = parseFloat(display.value);
-    } else if (!waitingForSecond) {
-      const result = calculate(firstOperand, parseFloat(display.value), operator);
-      firstOperand = typeof result === "number" ? result : null;
-      updateDisplay(result);
-    }
-    operator = op;
-    waitingForSecond = true;
-  };
-
-  /**
-   * Executes the arithmetic operation.
-   * @param {number} a - First operand.
-   * @param {number} b - Second operand.
-   * @param {string} op - Operator.
-   * @returns {number|string} Result or 'Error' on division by zero.
-   */
-  const calculate = (a, b, op) => {
-    switch (op) {
-      case '+':
-        return a + b;
-      case '-':
-        return a - b;
-      case '*':
-        return a * b;
-      case '/':
-        return b !== 0 ? a / b : 'Error';
-      default:
-        return b;
-    }
-  };
-
-  /**
-   * Computes the final result when '=' is pressed.
-   */
-  const handleEquals = () => {
-    if (operator && firstOperand !== null) {
-      const result = calculate(firstOperand, parseFloat(display.value), operator);
-      updateDisplay(result);
-      firstOperand = null;
-      operator = null;
-      waitingForSecond = false;
-    }
-  };
-
-  /**
-   * Resets the calculator to its initial state.
-   */
-  const handleClear = () => {
-    updateDisplay('0');
-    firstOperand = null;
+  const clearAll = () => {
+    currentInput = "";
     operator = null;
-    waitingForSecond = false;
+    previousValue = null;
+    updateDisplay();
   };
 
-  // ----- Initialization -----
-  const display = document.getElementById('display');
-  const buttons = document.querySelectorAll('.btn[data-value]');
-  const clearBtn = document.getElementById('clear');
-  const equalsBtn = document.getElementById('equals');
-
-  let firstOperand = null;
-  let operator = null;
-  let waitingForSecond = false;
-
-  // Set initial display value
-  updateDisplay('0');
-
-  // Attach event listeners to number/operator buttons
-  buttons.forEach((btn) => {
-    btn.addEventListener('click', () => {
-      const value = btn.getAttribute('data-value');
-      if (!isNaN(value) || value === '.') {
-        handleNumber(value);
-      } else {
-        handleOperator(value);
+  /**
+   * Performs the pending arithmetic operation and shows the result.
+   */
+  const calculate = () => {
+    if (operator && previousValue !== null && currentInput) {
+      const a = parseFloat(previousValue);
+      const b = parseFloat(currentInput);
+      let result;
+      switch (operator) {
+        case "+":
+          result = a + b;
+          break;
+        case "-":
+          result = a - b;
+          break;
+        case "*":
+          result = a * b;
+          break;
+        case "/":
+          result = b !== 0 ? a / b : "Error";
+          break;
+        default:
+          result = b;
       }
-    });
+      currentInput = String(result);
+      operator = null;
+      previousValue = null;
+      updateDisplay();
+    }
+  };
+
+  /**
+   * Central dispatcher for all button clicks, handling numbers, operators, clear, and equals.
+   * @param {HTMLElement} btn - The button element that was clicked.
+   */
+  const handleButton = (btn) => {
+    const value = btn.dataset.value;
+    const action = btn.dataset.action;
+
+    if (action === "clear") {
+      clearAll();
+      return;
+    }
+
+    if (action === "calculate") {
+      calculate();
+      return;
+    }
+
+    if (btn.classList.contains("operator")) {
+      if (currentInput) {
+        if (previousValue !== null && operator) {
+          calculate();
+        }
+        previousValue = currentInput;
+        operator = value;
+        currentInput = "";
+      }
+      return;
+    }
+
+    // Append numbers or decimal point
+    if (value) {
+      // Prevent multiple decimal points
+      if (value === "." && currentInput.includes(".")) return;
+      currentInput += value;
+      updateDisplay();
+    }
+  };
+
+  // State variables
+  let currentInput = "";
+  let operator = null;
+  let previousValue = null;
+
+  // Attach listeners to all calculator buttons
+  const buttons = document.querySelectorAll(".btn");
+  buttons.forEach((btn) => {
+    btn.addEventListener("click", () => handleButton(btn));
   });
 
-  clearBtn.addEventListener('click', handleClear);
-  equalsBtn.addEventListener('click', handleEquals);
+  // Initialize display on page load
+  updateDisplay();
 })();
