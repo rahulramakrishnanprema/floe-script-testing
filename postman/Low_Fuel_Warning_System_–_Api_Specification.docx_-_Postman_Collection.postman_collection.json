@@ -1,0 +1,310 @@
+{
+  "info": {
+    "name": "Low Fuel Warning System \u2013 Api Specification.docx - Postman Collection",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.example.com/api/v1/low-fuel",
+      "type": "string"
+    },
+    {
+      "key": "authToken",
+      "value": "INSERT_TOKEN_HERE",
+      "type": "string"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{authToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "item": [
+    {
+      "name": "Fuel Sensor Input",
+      "description": "Endpoint for submitting raw fuel sensor voltage readings. The system applies low-pass filtering, spike rejection, and voltage-to-liter conversion.",
+      "item": [
+        {
+          "name": "Submit Raw Fuel Sensor Data",
+          "description": "Accepts raw fuel sensor voltage readings. The system applies low-pass filtering, spike rejection, and voltage-to-liter conversion.",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/sensor/fuel"
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"timestamp\": \"2026-01-17T10:15:30Z\",\n  \"voltage\": 3.2\n}"
+            }
+          },
+          "response": [
+            {
+              "name": "Success",
+              "status": "200 OK",
+              "code": 200,
+              "body": "{\n  \"fuelQuantityLiters\": 38.4,\n  \"status\": \"ACCEPTED\"\n}"
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Consumption Profile",
+      "description": "API to retrieve and update consumption profiles.",
+      "item": [
+        {
+          "name": "Get Active Consumption Profile",
+          "description": "Retrieve the active consumption profile.",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/consumption/profile"
+            }
+          },
+          "response": [
+            {
+              "name": "Success",
+              "status": "200 OK",
+              "code": 200,
+              "body": "{\n  \"profileType\": \"LEARNED\",\n  \"averageConsumption\": 6.9,\n  \"historyKm\": 10000,\n  \"fallbackAvailable\": true\n}"
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Update Consumption Profile",
+          "description": "Updates the circular buffer with real-time consumption data.",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/consumption/profile/update"
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"distanceKm\": 25,\n  \"fuelUsedLiters\": 1.8,\n  \"drivingCondition\": \"CITY\"\n}"
+            }
+          },
+          "response": [
+            {
+              "name": "Success",
+              "status": "200 OK",
+              "code": 200,
+              "body": "{\n  \"updated\": true,\n  \"adaptationStatus\": \"IN_PROGRESS\"\n}"
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Driving Range Calculation",
+      "description": "Endpoint to estimate remaining driving range.",
+      "item": [
+        {
+          "name": "Get Estimated Driving Range",
+          "description": "Calculates remaining driving range using fuel quantity, learned or default consumption profile, and last 100 km average.",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/range/estimate"
+            }
+          },
+          "response": [
+            {
+              "name": "Success",
+              "status": "200 OK",
+              "code": 200,
+              "body": "{\n  \"fuelRemainingLiters\": 8.5,\n  \"averageConsumption\": 7.1,\n  \"estimatedRangeKm\": 85,\n  \"calculationBasis\": \"LAST_100_KM\"\n}"
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Low-Fuel Warning State",
+      "description": "Endpoints to get and evaluate warning state.",
+      "item": [
+        {
+          "name": "Get Current Warning Status",
+          "description": "Retrieve the current low-fuel warning status.",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/warning/status"
+            }
+          },
+          "response": [
+            {
+              "name": "Success",
+              "status": "200 OK",
+              "code": 200,
+              "body": "{\n  \"warningActive\": true,\n  \"activationThresholdKm\": 80,\n  \"deactivationThresholdKm\": 120,\n  \"currentRangeKm\": 75\n}"
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Evaluate Warning State",
+          "description": "Evaluates hysteresis logic and updates warning state based on estimated range.",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/warning/evaluate"
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"estimatedRangeKm\": 78\n}"
+            }
+          },
+          "response": [
+            {
+              "name": "Success",
+              "status": "200 OK",
+              "code": 200,
+              "body": "{\n  \"warningState\": \"ACTIVE\",\n  \"reason\": \"RANGE_BELOW_ACTIVATION_THRESHOLD\"\n}"
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Power Cycle Persistence",
+      "description": "Endpoint to restore warning state on ignition ON.",
+      "item": [
+        {
+          "name": "Restore Warning State on Ignition ON",
+          "description": "Restores the warning state when the vehicle is powered on.",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/system/restore"
+            }
+          },
+          "response": [
+            {
+              "name": "Success",
+              "status": "200 OK",
+              "code": 200,
+              "body": "{\n  \"restored\": true,\n  \"warningActive\": true\n}"
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
