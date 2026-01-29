@@ -1,0 +1,420 @@
+{
+  "info": {
+    "name": "Low Fuel Warning System \u2013 Api Specification.docx - Postman Collection",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://example.com/api/v1/low-fuel",
+      "type": "string"
+    },
+    {
+      "key": "authToken",
+      "value": "INSERT_TOKEN_HERE",
+      "type": "string"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{authToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "item": [
+    {
+      "name": "Fuel Sensor Input",
+      "description": "Submit raw fuel sensor voltage readings. The system applies low-pass filtering, spike rejection, and voltage-to-liter conversion.",
+      "item": [
+        {
+          "name": "Submit Raw Fuel Sensor Data",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"timestamp\": \"2026-01-17T10:15:30Z\",\n  \"voltage\": 3.2\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/sensor/fuel"
+            }
+          },
+          "response": [
+            {
+              "name": "Success",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"timestamp\": \"2026-01-17T10:15:30Z\",\n  \"voltage\": 3.2\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/sensor/fuel"
+                }
+              },
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "type": "text"
+                }
+              ],
+              "body": "{\n  \"fuelQuantityLiters\": 38.4,\n  \"status\": \"ACCEPTED\"\n}"
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Consumption Profile",
+      "description": "Get and update the vehicle's consumption profile.",
+      "item": [
+        {
+          "name": "Get Active Consumption Profile",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/consumption/profile"
+            }
+          },
+          "response": [
+            {
+              "name": "Success",
+              "originalRequest": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/consumption/profile"
+                }
+              },
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "type": "text"
+                }
+              ],
+              "body": "{\n  \"profileType\": \"LEARNED\",\n  \"averageConsumption\": 6.9,\n  \"historyKm\": 10000,\n  \"fallbackAvailable\": true\n}"
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Update Consumption Profile (Learning Input)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"distanceKm\": 25,\n  \"fuelUsedLiters\": 1.8,\n  \"drivingCondition\": \"CITY\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/consumption/profile/update"
+            }
+          },
+          "response": [
+            {
+              "name": "Success",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"distanceKm\": 25,\n  \"fuelUsedLiters\": 1.8,\n  \"drivingCondition\": \"CITY\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/consumption/profile/update"
+                }
+              },
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "type": "text"
+                }
+              ],
+              "body": "{\n  \"updated\": true,\n  \"adaptationStatus\": \"IN_PROGRESS\"\n}"
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Driving Range Calculation",
+      "description": "Calculate the remaining driving range using current fuel quantity and consumption profile.",
+      "item": [
+        {
+          "name": "Get Estimated Driving Range",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/range/estimate"
+            }
+          },
+          "response": [
+            {
+              "name": "Success",
+              "originalRequest": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/range/estimate"
+                }
+              },
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "type": "text"
+                }
+              ],
+              "body": "{\n  \"fuelRemainingLiters\": 8.5,\n  \"averageConsumption\": 7.1,\n  \"estimatedRangeKm\": 85,\n  \"calculationBasis\": \"LAST_100_KM\"\n}"
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Low-Fuel Warning State",
+      "description": "Retrieve and evaluate the low\u2011fuel warning status.",
+      "item": [
+        {
+          "name": "Get Current Warning Status",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/warning/status"
+            }
+          },
+          "response": [
+            {
+              "name": "Success",
+              "originalRequest": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/warning/status"
+                }
+              },
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "type": "text"
+                }
+              ],
+              "body": "{\n  \"warningActive\": true,\n  \"activationThresholdKm\": 80,\n  \"deactivationThresholdKm\": 120,\n  \"currentRangeKm\": 75\n}"
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Evaluate Warning State",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"estimatedRangeKm\": 78\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/warning/evaluate"
+            }
+          },
+          "response": [
+            {
+              "name": "Success",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"estimatedRangeKm\": 78\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/warning/evaluate"
+                }
+              },
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "type": "text"
+                }
+              ],
+              "body": "{\n  \"warningState\": \"ACTIVE\",\n  \"reason\": \"RANGE_BELOW_ACTIVATION_THRESHOLD\"\n}"
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Power Cycle Persistence",
+      "description": "Restore warning state when the vehicle is turned on.",
+      "item": [
+        {
+          "name": "Restore Warning State on Ignition ON",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/system/restore"
+            }
+          },
+          "response": [
+            {
+              "name": "Success",
+              "originalRequest": {
+                "method": "POST",
+                "url": {
+                  "raw": "{{baseUrl}}/system/restore"
+                }
+              },
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "type": "text"
+                }
+              ],
+              "body": "{\n  \"restored\": true,\n  \"warningActive\": true\n}"
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
